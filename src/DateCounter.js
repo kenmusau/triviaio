@@ -1,35 +1,43 @@
 import { useReducer } from "react";
 
+const initialState = {
+  count: 0,
+  step: 1,
+};
+
 function reducer(state, action) {
-  if (action.type === "inc")
-    return {
-      count: state.count + 1,
-    };
-  if (action.type === "dec")
-    return {
-      count: state.count - 1,
-    };
-  if (action.type === "setCount")
-    return {
-      count: action.payload,
-    };
-  if (action.type === "setStep")
-    return {
-      step: action.payload,
-    };
-  if (action.type === "reset") {
-    return {
-      step: 1,
-    };
+  switch (action.type) {
+    case "inc":
+      return {
+        ...state,
+        count: state.count + state.step,
+      };
+    case "dec":
+      return {
+        ...state,
+        count: state.count - state.step,
+      };
+    case "setCount":
+      return {
+        ...state,
+        count: action.payload,
+      };
+    case "setStep":
+      return {
+        ...state,
+        step: action.payload,
+        count: state.count,
+      };
+
+    case "reset":
+      return initialState;
+
+    default:
+      throw new Error("Unknow Action");
   }
 }
 
 function DateCounter() {
-  const initialState = {
-    count: 0,
-    step: 1,
-  };
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const { count, step } = state;
 
